@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+body{
+  margin:0;
+  padding-top:20px;
+  font-family:-apple-system,BlinkMacSystemFont,"Roboto","Segoe UI","Oxygen-Sans","Ubuntu","Cantarell","Helvetica Neue",sans-serif;
+  text-align:center;
+}
+*{
+  box-sizing:border-box;
+}
+#copy{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  height:32px;
+  padding:0 12px;
+  border:2px solid transparent;
+  border-radius:4px;
+  background:#4338CA;
+  color:#fff;
+  font:inherit;
+  font-size:14px;
+  font-weight:500;
+  line-height:1.2;
+  cursor:copy;
+}
+#copy:hover{
+  background:#3730A3;
+}
+#copy:focus-visible{
+  outline:2px solid #2563EB;
+  outline-offset:2px;
+}
+#copy svg{
+  width:18px;
+  height:18px;
+  margin-right:8px;
+}
+#copy svg path{
+  fill:currentColor;
+}
+.link{
+  display:block;
+  width:100%;
+  margin:20px auto 0;
+  padding:8px 20px;
+  border:0;
+  font-size:18px;
+  text-align:center;
+}
+.link:focus-visible{
+  outline:2px solid #4338CA;
+  outline-offset:2px;
+}
+.close{
+  display:none;
+  margin:20px auto 0;
+  padding:4px 8px;
+  border:1px solid #4338CA;
+  border-radius:3px;
+  background:transparent;
+  color:#4338CA;
+  font-size:12px;
+  line-height:1.2;
+  cursor:pointer;
+}
+.close:focus-visible{
+  outline:2px solid #4338CA;
+  outline-offset:2px;
+}
+</style>
+</head>
+
+<body>
+
+<button id="copy" type="button">
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"/>
+  </svg>
+  Salin tautan
+</button>
+
+<input class="link" type="text" id="linkInput" readonly>
+
+<button class="close" id="close" type="button">Tutup</button>
+
+<script>
+(function(){
+  const copyButton = document.getElementById('copy');
+  const linkInput = document.getElementById('linkInput');
+  const closeButton = document.getElementById('close');
+
+  let link = '';
+
+  try{
+    link = decodeURIComponent(window.location.hash.substring(1));
+  }catch(e){
+    link = window.location.hash.substring(1);
+  }
+
+  linkInput.value = link;
+
+  copyButton.addEventListener('click', async function(){
+    try{
+      await navigator.clipboard.writeText(link);
+      copyButton.lastChild.textContent = ' Tautan tersalin';
+    }catch(e){
+      linkInput.select();
+      document.execCommand('copy');
+      copyButton.lastChild.textContent = ' Tautan tersalin';
+    }
+
+    closeButton.style.display = 'inline-block';
+  });
+
+  closeButton.addEventListener('click', function(){
+    window.close();
+  });
+})();
+</script>
+
+</body>
+</html>
